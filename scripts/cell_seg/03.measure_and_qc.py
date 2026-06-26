@@ -112,8 +112,8 @@ def main():
     labels_file = sys.argv[1] if len(sys.argv) > 1 else LABELS_FILE
     tag = TAG
     if len(sys.argv) > 1:
-        base = os.path.splitext(os.path.basename(labels_file))[0]
-        tag = base.split(".")[-1] if "." in base else base
+        stem = os.path.splitext(os.path.basename(labels_file))[0]
+        tag = stem.split("_")[-1]  # e.g. 02.nuclei_labels_cellpose -> 'cellpose'
     if not os.path.exists(labels_file):
         raise FileNotFoundError(f"Label volume not found: {labels_file}")
     if not os.path.exists(INPUT_FILE):
