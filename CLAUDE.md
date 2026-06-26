@@ -8,7 +8,6 @@ img/
 ├── README.md
 ├── LICENSE
 ├── pyproject.toml
-├── data/                  # sample data (tracked)
 ├── local_data/            # local/large data (gitignored)
 │   ├── res/                  # results (computed data - csv, parquet, npy, etc)
 │   └── fig/                  # visualization (png, html, etc)

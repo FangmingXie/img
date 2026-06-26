@@ -5,7 +5,6 @@ Image processing.
 ## Repository structure
 
 ```
-data/          sample data (tracked)
 local_data/    large/local outputs (gitignored): res/, fig/
 links/         curated symlinks to data inputs (tracked)
 plan/          implementation plans
