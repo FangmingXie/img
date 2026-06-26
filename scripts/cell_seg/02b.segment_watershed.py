@@ -20,7 +20,9 @@ OUT_LABELS   = os.path.join(OUT_RES_DIR, '02b.nuclei_labels_watershed.tif')
 # ---- Config ----
 NUC_CHANNEL  = 0          # C0 = DAPI
 MODE         = "3d"       # "3d" | "slice_stitch"
-ANISOTROPY_Z = 3.0        # estimated Z:XY voxel ratio (Z-step unrecorded)
+VOXEL_XY_UM  = 0.0575     # 57.5 nm/px (XY)
+VOXEL_Z_UM   = 0.160      # 160 nm/step (Z)
+ANISOTROPY_Z = VOXEL_Z_UM / VOXEL_XY_UM  # Z:XY = 2.78
 SIGMA_XY     = 1.5
 SIGMA_Z      = 1.0
 PNORM_LO     = 1.0        # per-slice percentile normalization

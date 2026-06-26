@@ -30,6 +30,9 @@ NUC_CHANNEL  = 0             # channel used as the QC background (DAPI)
 N_QC_SLICES  = 6            # number of evenly spaced Z-slices in the slice montage
 DISP_LO      = 1.0          # display normalization percentiles
 DISP_HI      = 99.8
+VOXEL_XY_UM  = 0.0575       # 57.5 nm/px (XY)
+VOXEL_Z_UM   = 0.160        # 160 nm/step (Z)
+VOXEL_UM3    = VOXEL_XY_UM * VOXEL_XY_UM * VOXEL_Z_UM  # µm³ per voxel
 
 
 def to_display_rgb(gray, boundaries=None):
@@ -57,18 +60,29 @@ def measure_table(labels, stack):
         rename[f"intensity_mean-{c}"] = f"mean_C{c}"
     df = df.rename(columns=rename)
     df = df.rename(columns={"area": "volume_voxels"})
+    df["volume_um3"] = df["volume_voxels"] * VOXEL_UM3
+    # physical centroids (µm): z uses Z spacing, y/x use XY spacing
+    df["centroid_z_um"] = df["centroid_z"] * VOXEL_Z_UM
+    df["centroid_y_um"] = df["centroid_y"] * VOXEL_XY_UM
+    df["centroid_x_um"] = df["centroid_x"] * VOXEL_XY_UM
     return df
 
 
 def write_summary(df, path, mode_label):
     vol = df["volume_voxels"].to_numpy()
+    um3 = df["volume_um3"].to_numpy()
     lines = [
         f"Label source: {mode_label}",
+        f"Voxel size: XY={VOXEL_XY_UM} µm, Z={VOXEL_Z_UM} µm ({VOXEL_UM3:.3e} µm³/voxel)",
         f"Nuclei count: {len(df)}",
         "",
         "Volume (voxels):",
         f"  min/median/mean/max: {vol.min():.0f} / {np.median(vol):.0f} / {vol.mean():.1f} / {vol.max():.0f}",
         f"  pctiles 10/25/75/90: " + " / ".join(f"{np.percentile(vol, q):.0f}" for q in (10, 25, 75, 90)),
+        "",
+        "Volume (µm³):",
+        f"  min/median/mean/max: {um3.min():.2f} / {np.median(um3):.2f} / {um3.mean():.2f} / {um3.max():.2f}",
+        f"  pctiles 10/25/75/90: " + " / ".join(f"{np.percentile(um3, q):.2f}" for q in (10, 25, 75, 90)),
     ]
     with open(path, "w") as f:
         f.write("\n".join(lines) + "\n")

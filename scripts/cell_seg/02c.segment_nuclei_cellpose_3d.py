@@ -27,7 +27,9 @@ PER_Z_NORM         = True       # rescale each Z-slice (1-99.8 pctile) to counte
 DIAMETER           = None       # None -> cpsam diam_mean (~30 px); else value in px
 FLOW_THRESHOLD     = 0.4
 CELLPROB_THRESHOLD = -1.0       # lower = recover dimmer/deeper nuclei
-ANISOTROPY         = 3.0        # estimated Z:XY voxel ratio (Z-step unrecorded) -- key 3D knob
+VOXEL_XY_UM        = 0.0575     # 57.5 nm/px (XY)
+VOXEL_Z_UM         = 0.160      # 160 nm/step (Z)
+ANISOTROPY         = VOXEL_Z_UM / VOXEL_XY_UM  # Z:XY = 2.78 -- key 3D knob
 MIN_SIZE           = 50         # drop masks smaller than this (voxels)
 BATCH_SIZE         = 16         # GPU has headroom
 PNORM_LO, PNORM_HI = 1.0, 99.8  # per-Z normalization percentiles

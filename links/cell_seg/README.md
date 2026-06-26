@@ -16,8 +16,10 @@ Read from the TIFF/ImageJ metadata and pixel data (via `tifffile`).
 | Format | ImageJ hyperstack (composite), big-endian |
 | Pages | 156 (= 39 Z × 4 C) |
 | Unit | micron |
-| XY resolution tag | ~17.378 px/µm (≈0.0575 µm/px) — likely stale post-downsample |
-| Z spacing | **not recorded** in metadata |
+| **XY voxel size** | **0.0575 µm/px (57.5 nm)** — confirmed by user; matches the embedded resolution tag |
+| **Z voxel size** | **0.160 µm/step (160 nm)** — confirmed by user (not in file metadata) |
+| Anisotropy (Z:XY) | **2.78** |
+| Voxel volume | **5.29×10⁻⁴ µm³** |
 | Display range (min/max) | 0 / 125 |
 
 ### Acquisition (from embedded `Info` metadata)
